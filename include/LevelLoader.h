@@ -18,6 +18,7 @@ class LevelLoader {
     ~LevelLoader();
 
     void                    draw();
+    vector<Model*>          getCheeses();
     float                   getEndX();
     float                   getEndY();
     vector<vector<Model*> > getLevel();
@@ -30,6 +31,7 @@ class LevelLoader {
   private:
     int                        levelSizeX, levelSizeY, startCoord[2],
                                endCoord[2];
+    vector<Model*>             cheeses, bags;
     vector<vector<Model*> >    level;
     unordered_map<char, Model> obstacles;
 };

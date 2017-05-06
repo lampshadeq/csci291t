@@ -1,6 +1,12 @@
 size 14 8
+
 start 7 4
 end 0 10
+
+cheese 1 5
+cheese 2 12
+cheese 4 11
+endcheese
 
 DGGGGGGGGDPPPD
 DGPPPPDGDGDDPD

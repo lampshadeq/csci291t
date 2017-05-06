@@ -18,6 +18,7 @@ class Model {
     double getTranslateY();
     double getZoom();
     void   init(char*);
+    void   setModelSize(float, float, float);
     void   setRotateX(double);
     void   setRotateY(double);
     void   setTileType(char);

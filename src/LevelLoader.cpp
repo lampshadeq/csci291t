@@ -38,6 +38,13 @@ void LevelLoader::draw() {
 /*******************************************************************************
 *
 *******************************************************************************/
+vector<Model*> LevelLoader::getCheeses() {
+  return cheeses;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
 float LevelLoader::getEndX() {
   return endCoord[1];
 }
@@ -113,7 +120,7 @@ float LevelLoader::getStartY() {
 *******************************************************************************/
 void LevelLoader::load(char* filename) {
   ifstream     ifs;
-  int          line;
+  int          line, x, y;
   string       str;
   stringstream ss;
 
@@ -154,6 +161,30 @@ void LevelLoader::load(char* filename) {
   ss.clear();
   ss  << str;
   ss  >> endCoord[1];
+
+  // Parse the cheese coordinates
+  while (true) {
+    ifs >> str;
+
+    if (str == "endcheese") {
+      break;
+    }
+
+    ifs >> str;
+    ss.clear();
+    ss  << str;
+    ss  >> y;
+
+    ifs >> str;
+    ss.clear();
+    ss  << str;
+    ss  >> x;
+
+    cheeses.push_back(new Model());
+    cheeses.back()->init("images/items/moldy_cheese.png");
+    cheeses.back()->setTranslateX(-7.f + x * 1.f);
+    cheeses.back()->setTranslateY(-3.f + y * 1.f);
+  }
 
   // Parse the map
   line = 0;

@@ -27,6 +27,9 @@ GLScene::~GLScene() {
 *
 *******************************************************************************/
 GLint GLScene::draw() {
+  unsigned int   i;
+  vector<Model*> v;
+
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
@@ -40,6 +43,14 @@ GLint GLScene::draw() {
   glPushMatrix();
     player->action(player->getActionTrigger(), levelLoader);
   glPopMatrix();
+
+  // Draw the cheeses
+  v = levelLoader->getCheeses();
+  for (i = 0; i < v.size(); i++) {
+    glPushMatrix();
+      v[i]->draw();
+    glPopMatrix();
+  }
 
   // Success
   return 1;
