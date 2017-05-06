@@ -13,17 +13,20 @@ class Model {
     void   draw();
     double getRotateX();
     double getRotateY();
+    char   getTileType();
     double getTranslateX();
     double getTranslateY();
     double getZoom();
     void   init(char*);
     void   setRotateX(double);
     void   setRotateY(double);
+    void   setTileType(char);
     void   setTranslateX(double);
     void   setTranslateY(double);
     void   setZoom(double);
 
   private:
+    char           tileType;
     double         rotateX, rotateY, rotateZ;
     double         translateX, translateY, zoom;
     float          modelSize[3]   = {1.f, 1.f, 1.f};

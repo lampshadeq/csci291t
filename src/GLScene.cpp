@@ -70,7 +70,7 @@ GLint GLScene::init() {
 
   // Setup the level loader
   levelLoader = new LevelLoader();
-  levelLoader->load("levels/levelTest.level");
+  levelLoader->load("levels/level1");
 
   // Setup the player
   player = new Player();

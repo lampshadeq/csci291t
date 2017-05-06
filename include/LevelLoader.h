@@ -17,10 +17,15 @@ class LevelLoader {
     LevelLoader();
     ~LevelLoader();
 
-    void  draw();
-    float getStartX();
-    float getStartY();
-    void  load(char*);
+    void                    draw();
+    float                   getEndX();
+    float                   getEndY();
+    vector<vector<Model*> > getLevel();
+    int                     getLevelSizeX();
+    int                     getLevelSizeY();
+    float                   getStartX();
+    float                   getStartY();
+    void                    load(char*);
 
   private:
     int                        levelSizeX, levelSizeY, startCoord[2],

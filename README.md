@@ -2,7 +2,6 @@
 # CSCI 291T - Spring 2017
 
 Things to do:
-- player must stay on the pavement
 - add cheese locations
 - add bag locations
 - object collision (player vs. cheese, player vs. bag, cheese vs. bag)

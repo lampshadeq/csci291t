@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <LevelLoader.h>
+#include <cmath>
 
 using namespace std;
 
@@ -22,6 +23,8 @@ class Player {
     void setY(float);
 
   private:
+    char getTileForCoordinate(LevelLoader*, float, float);
+
     float         playerSize[3]  = {0.7f, 0.7f, 1.f};
     float         vertices[4][3] = {{0.f, 0.f, -1.5f}, {1.f, 0.f, -1.5f},
                                     {1.f, 1.f, -1.5f}, {0.f, 1.f, -1.5f}};
