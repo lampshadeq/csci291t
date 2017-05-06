@@ -116,6 +116,11 @@ void Inputs::keyDown(Player* p) {
     case VK_END:
       //m->setZoom(m->getZoom() + 1.0);
       break;
+
+    // Space
+    case VK_SPACE:
+      p->launchProjectile();
+      break;
   }
 }
 

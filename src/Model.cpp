@@ -5,7 +5,7 @@
 *******************************************************************************/
 Model::Model()
 : rotateX(0.0), rotateY(0.0), rotateZ(0.0), translateX(0.0), translateY(0.0),
-  zoom(-8.0), tileType('\0') {
+  zoom(-8.0), tileType('\0'), active(false), velocity(0.f), direction(false) {
 
 }
 
@@ -25,6 +25,20 @@ void Model::draw() {
 
   // Scale the model
   glScalef(modelSize[0], modelSize[1], modelSize[2]);
+
+  // Update the translations
+  double delta = 0.05;
+  if (active) {
+    // Vertical
+    if (!direction) {
+      translateY += velocity * delta;
+    }
+
+    // Horizontal
+    else {
+      translateX += velocity * delta;
+    }
+  }
 
   // Translate the model
   glTranslated(translateX, -translateY, zoom);
@@ -103,6 +117,27 @@ void Model::init(char* filename) {
 /*******************************************************************************
 *
 *******************************************************************************/
+bool Model::isActive() {
+  return active;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void Model::setDirection(bool d) {
+  direction = d;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void Model::setActive(bool a) {
+  active = a;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
 void Model::setModelSize(float x, float y, float z) {
   modelSize[0] = x;
   modelSize[1] = y;
@@ -142,6 +177,13 @@ void Model::setTranslateX(double x) {
 *******************************************************************************/
 void Model::setTranslateY(double y) {
   translateY = y;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void Model::setVelocity(float v) {
+  velocity = v;
 }
 
 /*******************************************************************************

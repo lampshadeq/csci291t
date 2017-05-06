@@ -128,6 +128,14 @@ void Player::action(int a, LevelLoader* levelLoader) {
 /*******************************************************************************
 *
 *******************************************************************************/
+void Player::addProjectile(Model* m) {
+  projectiles.push_back(m);
+  m->setActive(false);
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
 void Player::draw() {
   // Scale the player
   glScalef(playerSize[0], playerSize[1], playerSize[2]);
@@ -153,6 +161,13 @@ void Player::draw() {
 *******************************************************************************/
 int Player::getActionTrigger() {
   return actionTrigger;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+vector<Model*>* Player::getProjectiles() {
+  return &projectiles;
 }
 
 /*******************************************************************************
@@ -228,6 +243,71 @@ void Player::init() {
     ss.str("");
     ss << "images/chicken/west_" << i << ".png";
     west[i].bindTexture(ss.str().c_str());
+  }
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void Player::launchProjectile() {
+  bool         d;
+  float        tx, ty, vel;
+  unsigned int i, j;
+
+  if (projectiles.empty()) {
+    return;
+  }
+
+  // Find the next available projectile
+  j = projectiles.size();
+  for (i = 0; i < projectiles.size(); i++) {
+    if (!projectiles[i]->isActive()) {
+      j = i;
+      break;
+    }
+  }
+
+  // Initialize the projectile
+  if (j != projectiles.size()) {
+    switch (previousTrigger) {
+      // North
+      case 1:
+        tx  = x;
+        ty  = y - 1.f;
+        vel = -1.f;
+        d   = false;
+        break;
+
+      // South
+      case 2:
+        tx  = x;
+        ty  = y + 1.f;
+        vel = 1.f;
+        d   = false;
+        break;
+
+      // East
+      case 3:
+        tx  = x + 1.f;
+        ty  = y;
+        vel = 1.f;
+        d   = true;
+        break;
+
+      // West
+      case 4:
+        tx  = x - 1.f;
+        ty  = y;
+        vel = -1.f;
+        d   = true;
+        break;
+    }
+
+    projectiles[j]->setTranslateX(tx);
+    projectiles[j]->setTranslateY(ty);
+    projectiles[j]->setActive(true);
+    projectiles[j]->setVelocity(vel);
+    projectiles[j]->setDirection(d);
   }
 }
 

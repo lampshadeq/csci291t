@@ -34,6 +34,14 @@ bool GLScene::checkCollision(Model* m1, Model* m2) {
 /*******************************************************************************
 *
 *******************************************************************************/
+bool GLScene::checkCollision(Player* p, LevelLoader* l) {
+  return collision(p->getX(), p->getY(), 0.7f, 0.7f, l->getEndX(), l->getEndY(),
+                   1.f, 1.f);
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
 bool GLScene::checkCollision(Player* p, Model* m) {
   return collision(p->getX(), p->getY(), 0.7f, 0.7f, m->getTranslateX(),
                    m->getTranslateY(), 0.7f, 0.7f);
@@ -51,8 +59,9 @@ bool GLScene::collision(float x1, float y1, float w1, float h1, float x2,
 *
 *******************************************************************************/
 GLint GLScene::draw() {
-  unsigned int    i;
-  vector<Model*>* v;
+  unsigned int    i, j;
+  vector<int>     idxFlags;
+  vector<Model*> *v, *w;
 
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -62,7 +71,7 @@ GLint GLScene::draw() {
   v = levelLoader->getCheeses();
   for (i = 0; i < v->size(); i++) {
     if (checkCollision(player, v->at(i))) {
-      delete v->at(i);
+      player->addProjectile(v->at(i));
       v->erase(v->begin() + i);
       break;
     }
@@ -72,11 +81,37 @@ GLint GLScene::draw() {
   v = levelLoader->getBags();
   for (i = 0; i < v->size(); i++) {
     if (checkCollision(player, v->at(i))) {
-      // game over
+      printText(-1.f, 0.75f, -2.f, "GAME OVER!");
+      pauseFlag = true;
+      player->setActionTrigger(0);
     }
   }
 
-  // Check for collision between projectiles nad bags
+  // Check for collision between projectiles and bags
+  w = player->getProjectiles();
+  for (i = 0; i < w->size(); i++) {
+    if (w->at(i)->isActive()) {
+      for (j = 0; j < v->size(); j++) {
+        if (checkCollision(w->at(i), v->at(j))) {
+          delete v->at(j);
+          v->erase(v->begin() + j);
+          idxFlags.push_back(i);
+          break;
+        }
+      }
+    }
+  }
+  for (i = 0; i < idxFlags.size(); i++) {
+    delete w->at(idxFlags[i]);
+    w->erase(w->begin() + idxFlags[i]);
+  }
+
+  // Check if the player reached the end of the level
+  if (checkCollision(player, levelLoader)) {
+    printText(-1.f, 0.75f, -2.f, "YOU WON!");
+    pauseFlag = true;
+    player->setActionTrigger(0);
+  }
 
   // Draw the level
   glPushMatrix();
@@ -102,6 +137,16 @@ GLint GLScene::draw() {
     glPushMatrix();
       v->at(i)->draw();
     glPopMatrix();
+  }
+
+  // Draw the projectiles
+  v = player->getProjectiles();
+  for (i = 0; i < v->size(); i++) {
+    if (v->at(i)->isActive()) {
+      glPushMatrix();
+        v->at(i)->draw();
+      glPopMatrix();
+    }
   }
 
   // Success
@@ -141,8 +186,29 @@ GLint GLScene::init() {
   player->setX(levelLoader->getStartX() + 0.2f);
   player->setY(levelLoader->getStartY());
 
+  // Set the pause flag
+  pauseFlag = false;
+
   // Success
   return 1;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void GLScene::printText(float x, float y, float z, string s) {
+  glPushMatrix();
+    glDisable(GL_TEXTURE);
+
+    glColor3f(1.f, 1.f, 1.f);
+    glRasterPos3f(x, y, z);
+
+    for (unsigned int i =0 ; i < s.size(); i++) {
+      glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s[i]);
+    }
+
+    glEnable(GL_TEXTURE);
+  glPopMatrix();
 }
 
 /*******************************************************************************
@@ -173,6 +239,11 @@ GLvoid GLScene::resizeScene(GLsizei w, GLsizei h) {
 *
 *******************************************************************************/
 int GLScene::windowMsg(HWND h, UINT msg, WPARAM wp, LPARAM lp) {
+  // No inputs should be processed if the game is in a paused state
+  if (pauseFlag) {
+    return 0;
+  }
+
   // Pass the WPARAM to the inputs
   inputs->setWP(wp);
 
