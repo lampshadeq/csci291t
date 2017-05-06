@@ -26,13 +26,57 @@ GLScene::~GLScene() {
 /*******************************************************************************
 *
 *******************************************************************************/
+bool GLScene::checkCollision(Model* m1, Model* m2) {
+  return collision(m1->getTranslateX(), m1->getTranslateY(), 0.7f, 0.7f,
+                   m2->getTranslateX(), m2->getTranslateY(), 0.7f, 0.7f);
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+bool GLScene::checkCollision(Player* p, Model* m) {
+  return collision(p->getX(), p->getY(), 0.7f, 0.7f, m->getTranslateX(),
+                   m->getTranslateY(), 0.7f, 0.7f);
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+bool GLScene::collision(float x1, float y1, float w1, float h1, float x2,
+                        float y2, float w2, float h2) {
+  return (x1 < x2 + w2) && (x1 + w1 > x2) && (y1 < y2 + h2) && (y1 + h1 > y2);
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
 GLint GLScene::draw() {
-  unsigned int   i;
-  vector<Model*> v;
+  unsigned int    i;
+  vector<Model*>* v;
 
   // Clear the screen
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
+
+  // Check for collision between player and cheeses
+  v = levelLoader->getCheeses();
+  for (i = 0; i < v->size(); i++) {
+    if (checkCollision(player, v->at(i))) {
+      delete v->at(i);
+      v->erase(v->begin() + i);
+      break;
+    }
+  }
+
+  // Check for collision between player and bags
+  v = levelLoader->getBags();
+  for (i = 0; i < v->size(); i++) {
+    if (checkCollision(player, v->at(i))) {
+      // game over
+    }
+  }
+
+  // Check for collision between projectiles nad bags
 
   // Draw the level
   glPushMatrix();
@@ -46,17 +90,17 @@ GLint GLScene::draw() {
 
   // Draw the cheeses
   v = levelLoader->getCheeses();
-  for (i = 0; i < v.size(); i++) {
+  for (i = 0; i < v->size(); i++) {
     glPushMatrix();
-      v[i]->draw();
+      v->at(i)->draw();
     glPopMatrix();
   }
 
   // Draw the bags
   v = levelLoader->getBags();
-  for (i = 0; i < v.size(); i++) {
+  for (i = 0; i < v->size(); i++) {
     glPushMatrix();
-      v[i]->draw();
+      v->at(i)->draw();
     glPopMatrix();
   }
 

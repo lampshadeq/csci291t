@@ -23,6 +23,10 @@ class GLScene {
     int    windowMsg(HWND, UINT, WPARAM, LPARAM);
 
   private:
+    bool checkCollision(Model*, Model*);
+    bool checkCollision(Player*, Model*);
+    bool collision(float, float, float, float, float, float, float, float);
+
     double       rotateX, rotateY, rotateZ;
     double       translateX, translateY, zoom;
     float        height, width;

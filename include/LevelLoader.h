@@ -18,8 +18,8 @@ class LevelLoader {
     ~LevelLoader();
 
     void                    draw();
-    vector<Model*>          getBags();
-    vector<Model*>          getCheeses();
+    vector<Model*>*         getBags();
+    vector<Model*>*         getCheeses();
     float                   getEndX();
     float                   getEndY();
     vector<vector<Model*> > getLevel();

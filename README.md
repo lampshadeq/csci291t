@@ -2,7 +2,6 @@
 # CSCI 291T - Spring 2017
 
 Things to do:
-- object collision (player vs. cheese, player vs. bag, cheese vs. bag)
 - game winning conditions
 - add menus (start, continue, credits, exit)
 - projectile movement

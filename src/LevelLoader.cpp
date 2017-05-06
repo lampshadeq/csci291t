@@ -38,15 +38,15 @@ void LevelLoader::draw() {
 /*******************************************************************************
 *
 *******************************************************************************/
-vector<Model*> LevelLoader::getBags() {
-  return bags;
+vector<Model*>* LevelLoader::getBags() {
+  return &bags;
 }
 
 /*******************************************************************************
 *
 *******************************************************************************/
-vector<Model*> LevelLoader::getCheeses() {
-  return cheeses;
+vector<Model*>* LevelLoader::getCheeses() {
+  return &cheeses;
 }
 
 /*******************************************************************************
@@ -211,10 +211,10 @@ void LevelLoader::load(char* filename) {
     ss  << str;
     ss  >> x;
 
-    cheeses.push_back(new Model());
-    cheeses.back()->init("images/items/feedbag.png");
-    cheeses.back()->setTranslateX(-7.f + x * 1.f);
-    cheeses.back()->setTranslateY(-3.f + y * 1.f);
+    bags.push_back(new Model());
+    bags.back()->init("images/items/feedbag.png");
+    bags.back()->setTranslateX(-7.f + x * 1.f);
+    bags.back()->setTranslateY(-3.f + y * 1.f);
   }
 
   // Parse the map
