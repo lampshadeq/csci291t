@@ -10,6 +10,7 @@
 #include <Parallax.h>
 #include <LevelLoader.h>
 #include <Player.h>
+#include <Sound.h>
 
 class GLScene {
   public:
@@ -29,6 +30,7 @@ class GLScene {
     Inputs*      inputs;
     LevelLoader* levelLoader;
     Player*      player;
+    Sound*       sound;
 };
 
 #endif

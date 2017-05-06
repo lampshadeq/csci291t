@@ -5,6 +5,11 @@
 *******************************************************************************/
 GLScene::GLScene() {
   init();
+
+  // Setup the sound
+  sound = new Sound();
+  sound->init();
+  sound->playBackground();
 }
 
 /*******************************************************************************
@@ -15,6 +20,7 @@ GLScene::~GLScene() {
   delete inputs;
   delete levelLoader;
   delete player;
+  delete sound;
 }
 
 /*******************************************************************************

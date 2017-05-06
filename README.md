@@ -7,10 +7,10 @@ Things to do:
 - add bag locations
 - object collision (player vs. cheese, player vs. bag, cheese vs. bag)
 - game winning conditions
-- add menus
-- add sound
+- add menus (start, continue, credits, exit)
 - projectile movement
 - add particles
 - add parallax
 - add additional levels (5 total)
 - add transition from level to level
+- fix chicken direction
