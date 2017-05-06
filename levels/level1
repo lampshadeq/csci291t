@@ -8,6 +8,11 @@ cheese 2 12
 cheese 4 11
 endcheese
 
+bag 5 5
+bag 4 8
+bag 0 12
+endbag
+
 DGGGGGGGGDPPPD
 DGPPPPDGDGDDPD
 GGPGGGGGPPPPPG

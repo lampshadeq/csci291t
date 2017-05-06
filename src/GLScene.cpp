@@ -52,6 +52,14 @@ GLint GLScene::draw() {
     glPopMatrix();
   }
 
+  // Draw the bags
+  v = levelLoader->getBags();
+  for (i = 0; i < v.size(); i++) {
+    glPushMatrix();
+      v[i]->draw();
+    glPopMatrix();
+  }
+
   // Success
   return 1;
 }
