@@ -10,4 +10,3 @@ Things to do:
 - add parallax
 - add additional levels (5 total)
 - add transition from level to level
-- fix chicken direction

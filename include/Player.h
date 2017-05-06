@@ -29,7 +29,7 @@ class Player {
     float         vertices[4][3] = {{0.f, 0.f, -1.5f}, {1.f, 0.f, -1.5f},
                                     {1.f, 1.f, -1.5f}, {0.f, 1.f, -1.5f}};
     float         x, y;
-    int           actionTrigger;
+    int           actionTrigger, previousTrigger;
     int           northFrame, southFrame, eastFrame, westFrame;
     Timer*        timer;
     TextureLoader north[3], south[3], east[3], west[3];

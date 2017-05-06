@@ -19,15 +19,26 @@ Player::~Player() {
 *******************************************************************************/
 void Player::action(int a, LevelLoader* levelLoader) {
   char  tileType;
-  float movement  = 0.15f;
-  int   timerTick = 60;
+  float movement  = 0.1f;
+  int   timerTick = 80;
 
   glTranslatef(x, -y, -8.f);
 
   switch (a) {
     // Stand
     case 0:
-      north[0].binder();
+      if (previousTrigger == 1) {
+        north[0].binder();
+      }
+      else if (previousTrigger == 2) {
+        south[0].binder();
+      }
+      else if (previousTrigger == 3) {
+        east[0].binder();
+      }
+      else {
+        west[0].binder();
+      }
       break;
 
     // North
@@ -44,7 +55,8 @@ void Player::action(int a, LevelLoader* levelLoader) {
         y -= movement;
       }
 
-      northFrame = northFrame % 3;
+      previousTrigger = 1;
+      northFrame      = northFrame % 3;
       north[northFrame].binder();
 
       break;
@@ -63,7 +75,8 @@ void Player::action(int a, LevelLoader* levelLoader) {
         y += movement;
       }
 
-      southFrame = southFrame % 3;
+      previousTrigger = 2;
+      southFrame      = southFrame % 3;
       south[southFrame].binder();
 
       break;
@@ -82,7 +95,8 @@ void Player::action(int a, LevelLoader* levelLoader) {
         x += movement;
       }
 
-      eastFrame = eastFrame % 3;
+      previousTrigger = 3;
+      eastFrame       = eastFrame % 3;
       east[eastFrame].binder();
 
       break;
@@ -101,7 +115,8 @@ void Player::action(int a, LevelLoader* levelLoader) {
         x -= movement;
       }
 
-      westFrame = westFrame % 3;
+      previousTrigger = 4;
+      westFrame       = westFrame % 3;
       west[westFrame].binder();
 
       break;
@@ -153,13 +168,14 @@ char Player::getTileForCoordinate(LevelLoader* l, float x, float y) {
 *******************************************************************************/
 void Player::init() {
   // Initialize the variables
-  actionTrigger = 0;
-  northFrame    = 0;
-  southFrame    = 0;
-  eastFrame     = 0;
-  westFrame     = 0;
-  x             = 0.f;
-  y             = 0.f;
+  actionTrigger   = 0;
+  previousTrigger = 1;
+  northFrame      = 0;
+  southFrame      = 0;
+  eastFrame       = 0;
+  westFrame       = 0;
+  x               = 0.f;
+  y               = 0.f;
 
   // Start the timer
   timer = new Timer();
