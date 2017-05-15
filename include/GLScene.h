@@ -31,7 +31,11 @@ class GLScene {
     bool checkCollision(Player*, LevelLoader*);
     bool checkCollision(Player*, Model*);
     bool collision(float, float, float, float, float, float, float, float);
+    void drawGame();
     void printText(float, float, float, string);
+    void drawStartMenu();
+    void drawHelpMenu();
+    void drawCreditsMenu();
 
     bool         pauseFlag;
     double       rotateX, rotateY, rotateZ;
@@ -39,7 +43,9 @@ class GLScene {
     float        height, width;
     GLLight*     light;
     Inputs*      inputs;
+    int          state, menuState;
     LevelLoader* levelLoader;
+    Model        *startMenu, *dot, *helpMenu, *creditsMenu;
     Player*      player;
     Sound*       sound;
 };

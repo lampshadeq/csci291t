@@ -21,6 +21,10 @@ GLScene::~GLScene() {
   delete levelLoader;
   delete player;
   delete sound;
+  delete startMenu;
+  delete dot;
+  delete helpMenu;
+  delete creditsMenu;
 }
 
 /*******************************************************************************
@@ -59,6 +63,57 @@ bool GLScene::collision(float x1, float y1, float w1, float h1, float x2,
 *
 *******************************************************************************/
 GLint GLScene::draw() {
+  GLint status = 1;
+
+  switch (state) {
+    // Quit
+    case -1:
+      status = 0;
+      break;
+
+    // Menu
+    case 0:
+      drawStartMenu();
+      break;
+
+    // Game
+    case 1:
+      drawGame();
+      break;
+
+    // Help
+    case 2:
+      drawHelpMenu();
+      break;
+
+    // Credits
+    case 3:
+      drawCreditsMenu();
+      break;
+  }
+
+  // Done
+  return status;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void GLScene::drawCreditsMenu() {
+  // Clear the screen
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+
+  // Display the credits menu
+  glPushMatrix();
+    creditsMenu->draw();
+  glPopMatrix();
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void GLScene::drawGame() {
   unsigned int    i, j;
   vector<int>     idxFlags;
   vector<Model*> *v, *w;
@@ -148,9 +203,66 @@ GLint GLScene::draw() {
       glPopMatrix();
     }
   }
+}
 
-  // Success
-  return 1;
+/*******************************************************************************
+*
+*******************************************************************************/
+void GLScene::drawHelpMenu() {
+  // Clear the screen
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+
+  // Display the help menu
+  glPushMatrix();
+    helpMenu->draw();
+  glPopMatrix();
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void GLScene::drawStartMenu() {
+  // Clear the screen
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+
+  // Display the start menu
+  glPushMatrix();
+    startMenu->draw();
+  glPopMatrix();
+
+  // Display the dot
+  glPushMatrix();
+    // Set the correct translations
+    switch (menuState) {
+      // New game
+      case 0:
+        dot->setTranslateX(-25.0);
+        dot->setTranslateY(12.4);
+        break;
+
+      // Help
+      case 1:
+        dot->setTranslateX(-8.5);
+        dot->setTranslateY(12.4);
+        break;
+
+      // Credits
+      case 2:
+        dot->setTranslateX(2.0);
+        dot->setTranslateY(12.4);
+        break;
+
+      // Quit
+      case 3:
+        dot->setTranslateX(16.0);
+        dot->setTranslateY(12.4);
+        break;
+    }
+
+    dot->draw();
+  glPopMatrix();
 }
 
 /*******************************************************************************
@@ -180,14 +292,42 @@ GLint GLScene::init() {
   levelLoader = new LevelLoader();
   levelLoader->load("levels/level1");
 
+  // Setup the start menu
+  startMenu = new Model();
+  startMenu->init("images/menu/start_menu.png");
+  startMenu->setModelSize(14.f, 8.f, 1.f);
+  startMenu->setTranslateX(-0.5);
+  startMenu->setTranslateY(0.5);
+
+  // Setup the help menu
+  helpMenu = new Model();
+  helpMenu->init("images/menu/help_menu.png");
+  helpMenu->setModelSize(16.f, 9.f, 1.f);
+  helpMenu->setTranslateX(-0.5);
+  helpMenu->setTranslateY(0.57);
+
+  // Setup the credits menu
+  creditsMenu = new Model();
+  creditsMenu->init("images/menu/credits_menu.png");
+  creditsMenu->setModelSize(16.f, 9.f, 1.f);
+  creditsMenu->setTranslateX(-0.5);
+  creditsMenu->setTranslateY(0.57);
+
   // Setup the player
   player = new Player();
   player->init();
   player->setX(levelLoader->getStartX() + 0.2f);
   player->setY(levelLoader->getStartY());
 
-  // Set the pause flag
+  // Setup the dot
+  dot = new Model();
+  dot->init("images/menu/dot.png");
+  dot->setModelSize(0.25f, 0.25f, 1.f);
+
+  // Set the other variables
   pauseFlag = false;
+  state     = 0;
+  menuState = 0;
 
   // Success
   return 1;
@@ -250,12 +390,19 @@ int GLScene::windowMsg(HWND h, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     // Key is being held
     case WM_KEYDOWN:
-      inputs->keyDown(player);
+      if (state != 1) {
+        inputs->keyDown(menuState, state);
+      }
+      else {
+        inputs->keyDown(player);
+      }
       break;
 
     // Key is being released
     case WM_KEYUP:
-      inputs->keyUp(player);
+      if (state == 1) {
+        inputs->keyUp(player);
+      }
       break;
 
     // Mouse button is being held

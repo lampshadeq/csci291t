@@ -13,6 +13,7 @@ class Inputs {
     void mouseMove(Player*, double, double);
     void mouseUp();
     void mouseWheel(Player*, double);
+    void keyDown(int&, int&);
     void keyDown(Player*);
     void keyUp(Player*);
     void setWP(WPARAM);

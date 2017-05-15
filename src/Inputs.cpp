@@ -85,6 +85,51 @@ void Inputs::mouseWheel(Player* p, double z) {
 /*******************************************************************************
 *
 *******************************************************************************/
+void Inputs::keyDown(int& menuState, int& gameState) {
+  switch (wp) {
+    // Left arrow
+    case VK_LEFT:
+      menuState -= 1;
+      if (menuState < 0) {
+        menuState = 0;
+      }
+      break;
+
+    // Right arrow
+    case VK_RIGHT:
+      menuState += 1;
+      if (menuState > 3) {
+        menuState = 3;
+      }
+      break;
+
+    // Return key or space key
+    case VK_RETURN:
+    case VK_SPACE:
+      if (menuState == 0) {
+        gameState = 1;
+      }
+      else if (menuState == 1) {
+        gameState = 2;
+      }
+      else if (menuState == 2) {
+        gameState = 3;
+      }
+      else if (menuState == 3) {
+        gameState = -1;
+      }
+      break;
+
+    // Backspace key
+    case VK_BACK:
+      gameState = 0;
+      break;
+  }
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
 void Inputs::keyDown(Player* p) {
   switch (wp) {
     // Left arrow
