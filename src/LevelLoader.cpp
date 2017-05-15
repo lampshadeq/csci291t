@@ -4,11 +4,20 @@
 *
 *******************************************************************************/
 LevelLoader::LevelLoader()
-: levelSizeX(0), levelSizeY(0) {
+: levelSizeX(0), levelSizeY(0), levelNumber(0) {
   // Initialize the models
+  obstacles['B'].init("images/tiles/bridge.png");
+  obstacles['C'].init("images/tiles/ice_walkable.png");
   obstacles['D'].init("images/tiles/dirt.png");
+  obstacles['E'].init("images/tiles/goal.png");
+  obstacles['F'].init("images/tiles/forest.png");
   obstacles['G'].init("images/tiles/grass.png");
+  obstacles['I'].init("images/tiles/ice.png");
+  obstacles['L'].init("images/tiles/lava.png");
   obstacles['P'].init("images/tiles/pavement.png");
+  obstacles['R'].init("images/tiles/dirt_walkable.png");
+  obstacles['S'].init("images/tiles/swamp.png");
+  obstacles['W'].init("images/tiles/water.png");
 }
 
 /*******************************************************************************
@@ -68,6 +77,13 @@ float LevelLoader::getEndY() {
 *******************************************************************************/
 vector<vector<Model*> > LevelLoader::getLevel() {
   return level;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+int LevelLoader::getLevelNumber() {
+  return levelNumber;
 }
 
 /*******************************************************************************
@@ -237,4 +253,7 @@ void LevelLoader::load(char* filename) {
 
   // Close the file
   ifs.close();
+
+  // Update the level number
+  levelNumber++;
 }

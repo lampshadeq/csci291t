@@ -16,6 +16,7 @@
 #include <Sound.h>
 #include <string>
 #include <Particles.h>
+#include <Timer.h>
 
 using namespace std;
 
@@ -38,8 +39,10 @@ class GLScene {
     void drawGame();
     void drawGameOver();
     void drawHelpMenu();
+    void drawLevelComplete();
     void drawPauseMenu();
     void drawStartMenu();
+    void drawYouWon();
 
     bool          pauseFlag;
     double        rotateX, rotateY, rotateZ;
@@ -50,11 +53,12 @@ class GLScene {
     int           state, menuState;
     LevelLoader*  levelLoader;
     Model         *startMenu, *dot, *helpMenu, *creditsMenu, *pauseMenu,
-                  *gameOverText;
+                  *gameOverText, *levelCompleteText, *youWonText;
     Particles*    particles;
     Player*       player;
     ShaderLoader* shaderLoader;
     Sound*        sound;
+    Timer*        completeTimer;
 };
 
 #endif

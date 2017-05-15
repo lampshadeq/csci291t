@@ -26,6 +26,9 @@ GLScene::~GLScene() {
   delete gameOverText;
   delete particles;
   delete shaderLoader;
+  delete levelCompleteText;
+  delete completeTimer;
+  delete youWonText;
 }
 
 /*******************************************************************************
@@ -113,6 +116,18 @@ GLint GLScene::draw() {
       drawGame();
       drawGameOver();
       break;
+
+    // Level Complete
+    case 6:
+      drawGame();
+      drawLevelComplete();
+      break;
+
+    // You Won
+    case 7:
+      drawGame();
+      drawYouWon();
+      break;
   }
 
   // Done
@@ -137,50 +152,55 @@ void GLScene::drawGame() {
   vector<int>     idxFlags;
   vector<Model*> *v, *w;
 
-  // Check for collision between player and cheeses
-  v = levelLoader->getCheeses();
-  for (i = 0; i < v->size(); i++) {
-    if (checkCollision(player, v->at(i))) {
-      player->addProjectile(v->at(i));
-      v->erase(v->begin() + i);
-      sound->playCollectCheese();
-      break;
+  // Only check for conditions during the game
+  if (state == 1) {
+    // Check for collision between player and cheeses
+    v = levelLoader->getCheeses();
+    for (i = 0; i < v->size(); i++) {
+      if (checkCollision(player, v->at(i))) {
+        player->addProjectile(v->at(i));
+        v->erase(v->begin() + i);
+        sound->playCollectCheese();
+        break;
+      }
     }
-  }
 
-  // Check for collision between player and bags
-  v = levelLoader->getBags();
-  for (i = 0; i < v->size(); i++) {
-    if (checkCollision(player, v->at(i))) {
-      player->setActionTrigger(0);
-      state = 5;
+    // Check for collision between player and bags
+    v = levelLoader->getBags();
+    for (i = 0; i < v->size(); i++) {
+      if (checkCollision(player, v->at(i))) {
+        player->setActionTrigger(0);
+        state = 5;
+      }
     }
-  }
 
-  // Check for collision between projectiles and bags
-  w = player->getProjectiles();
-  for (i = 0; i < w->size(); i++) {
-    if (w->at(i)->isActive()) {
-      for (j = 0; j < v->size(); j++) {
-        if (checkCollision(w->at(i), v->at(j))) {
-          delete v->at(j);
-          v->erase(v->begin() + j);
-          idxFlags.push_back(i);
-          sound->playCheeseCollision();
-          break;
+    // Check for collision between projectiles and bags
+    w = player->getProjectiles();
+    for (i = 0; i < w->size(); i++) {
+      if (w->at(i)->isActive()) {
+        for (j = 0; j < v->size(); j++) {
+          if (checkCollision(w->at(i), v->at(j))) {
+            delete v->at(j);
+            v->erase(v->begin() + j);
+            idxFlags.push_back(i);
+            sound->playCheeseCollision();
+            break;
+          }
         }
       }
     }
-  }
-  for (i = 0; i < idxFlags.size(); i++) {
-    delete w->at(idxFlags[i]);
-    w->erase(w->begin() + idxFlags[i]);
-  }
+    for (i = 0; i < idxFlags.size(); i++) {
+      delete w->at(idxFlags[i]);
+      w->erase(w->begin() + idxFlags[i]);
+    }
 
-  // Check if the player reached the end of the level
-  if (checkCollision(player, levelLoader)) {
-    pauseFlag = true;
-    player->setActionTrigger(0);
+    // Check if the player reached the end of the level
+    if (checkCollision(player, levelLoader)) {
+      //pauseFlag = true;
+      player->setActionTrigger(0);
+      state = 6;
+      completeTimer->start();
+    }
   }
 
   // Draw the level
@@ -243,6 +263,54 @@ void GLScene::drawHelpMenu() {
   // Display the help menu
   glPushMatrix();
     helpMenu->draw();
+  glPopMatrix();
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void GLScene::drawLevelComplete() {
+  // Move to winning state if the last level
+  if (levelLoader->getLevelNumber() == 4) {
+    state = 7;
+    return;
+  }
+
+  // Check the timer to transition to next level
+  if (completeTimer->getTicks() > 5000) {
+    // Update the game state
+    state = 1;
+
+    // Stop the timer
+    completeTimer->stop();
+
+    // Update the level loader
+    switch (levelLoader->getLevelNumber()) {
+      case 1:
+        levelLoader->load("levels/level2");
+        break;
+
+      case 2:
+        levelLoader->load("levels/level3");
+        break;
+
+      case 3:
+        levelLoader->load("levels/level4");
+        break;
+
+      case 4:
+        levelLoader->load("levels/level5");
+        break;
+    }
+
+    // Update the player's coordinates
+    player->setX(levelLoader->getStartX() + 0.2f);
+    player->setY(levelLoader->getStartY());
+  }
+
+  // Display the level complete text
+  glPushMatrix();
+    levelCompleteText->draw();
   glPopMatrix();
 }
 
@@ -350,6 +418,23 @@ void GLScene::drawStartMenu() {
 /*******************************************************************************
 *
 *******************************************************************************/
+void GLScene::drawYouWon() {
+  // Check the timer to transition back to the start menu
+  if (completeTimer->getTicks() > 5000) {
+    state = 0;
+    sound->stopBackground();
+    sound->playMenu();
+  }
+
+  // Display the you won text
+  glPushMatrix();
+    youWonText->draw();
+  glPopMatrix();
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
 GLint GLScene::init() {
   // Setup OpenGL
   glShadeModel(GL_SMOOTH);
@@ -418,6 +503,18 @@ GLint GLScene::init() {
   gameOverText->setModelSize(5.f, 0.8209f, 1.f);
   gameOverText->setTranslateX(-0.5);
 
+  // Setup the level complete text
+  levelCompleteText = new Model();
+  levelCompleteText->init("images/menu/level_complete.png");
+  levelCompleteText->setModelSize(5.f, 0.6889f, 1.f);
+  levelCompleteText->setTranslateX(-0.5);
+
+  // Setup the you won text
+  youWonText = new Model();
+  youWonText->init("images/menu/you_won.png");
+  youWonText->setModelSize(5.f, 0.9726f, 1.f);
+  youWonText->setTranslateX(-0.5);
+
   // Setup the particles
   particles = new Particles();
 
@@ -425,6 +522,9 @@ GLint GLScene::init() {
   glewInit();
   shaderLoader = new ShaderLoader();
   shaderLoader->init("shaders/v1.vs", "shaders/f1.fs");
+
+  // Setup the complete timer
+  completeTimer = new Timer();
 
   // Set the other variables
   pauseFlag = false;
