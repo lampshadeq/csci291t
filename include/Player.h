@@ -9,6 +9,7 @@
 #include <cmath>
 #include <Model.h>
 #include <vector>
+#include <Sound.h>
 
 using namespace std;
 
@@ -24,7 +25,7 @@ class Player {
     float           getX();
     float           getY();
     void            init();
-    void            launchProjectile();
+    void            launchProjectile(Sound*);
     void            setActionTrigger(int);
     void            setX(float);
     void            setY(float);

@@ -249,7 +249,7 @@ void Player::init() {
 /*******************************************************************************
 *
 *******************************************************************************/
-void Player::launchProjectile() {
+void Player::launchProjectile(Sound* sound) {
   bool         d;
   float        tx, ty, vel;
   unsigned int i, j;
@@ -309,6 +309,9 @@ void Player::launchProjectile() {
     projectiles[j]->setVelocity(vel);
     projectiles[j]->setDirection(d);
   }
+
+  // Make projectile sound
+  sound->playThrowCheese();
 }
 
 /*******************************************************************************

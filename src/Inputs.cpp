@@ -168,6 +168,11 @@ void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
     case VK_BACK:
       if (gameState != 4) {
         gameState = 0;
+
+        if (sound->backgroundOn()) {
+          sound->stopBackground();
+          sound->playMenu();
+        }
       }
       break;
   }
@@ -176,7 +181,7 @@ void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
 /*******************************************************************************
 *
 *******************************************************************************/
-void Inputs::keyDown(Player* p, int& gameState) {
+void Inputs::keyDown(Player* p, int& gameState, Sound* sound) {
   switch (wp) {
     // Left arrow
     case VK_LEFT:
@@ -198,19 +203,9 @@ void Inputs::keyDown(Player* p, int& gameState) {
       p->setActionTrigger(2);
       break;
 
-    // Home
-    case VK_HOME:
-      //m->setZoom(m->getZoom() - 1.0);
-      break;
-
-    // End
-    case VK_END:
-      //m->setZoom(m->getZoom() + 1.0);
-      break;
-
     // Space
     case VK_SPACE:
-      p->launchProjectile();
+      p->launchProjectile(sound);
       break;
 
     // Backspace

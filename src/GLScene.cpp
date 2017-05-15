@@ -25,6 +25,7 @@ GLScene::~GLScene() {
   delete helpMenu;
   delete creditsMenu;
   delete pauseMenu;
+  delete gameOverText;
 }
 
 /*******************************************************************************
@@ -106,6 +107,12 @@ GLint GLScene::draw() {
       drawGame();
       drawPauseMenu();
       break;
+
+    // Game over
+    case 5:
+      drawGame();
+      drawGameOver();
+      break;
   }
 
   // Done
@@ -136,6 +143,7 @@ void GLScene::drawGame() {
     if (checkCollision(player, v->at(i))) {
       player->addProjectile(v->at(i));
       v->erase(v->begin() + i);
+      sound->playCollectCheese();
       break;
     }
   }
@@ -144,9 +152,8 @@ void GLScene::drawGame() {
   v = levelLoader->getBags();
   for (i = 0; i < v->size(); i++) {
     if (checkCollision(player, v->at(i))) {
-      printText(-1.f, 0.75f, -2.f, "GAME OVER!");
-      pauseFlag = true;
       player->setActionTrigger(0);
+      state = 5;
     }
   }
 
@@ -159,6 +166,7 @@ void GLScene::drawGame() {
           delete v->at(j);
           v->erase(v->begin() + j);
           idxFlags.push_back(i);
+          sound->playCheeseCollision();
           break;
         }
       }
@@ -171,7 +179,6 @@ void GLScene::drawGame() {
 
   // Check if the player reached the end of the level
   if (checkCollision(player, levelLoader)) {
-    printText(-1.f, 0.75f, -2.f, "YOU WON!");
     pauseFlag = true;
     player->setActionTrigger(0);
   }
@@ -210,6 +217,22 @@ void GLScene::drawGame() {
         v->at(i)->draw();
       glPopMatrix();
     }
+  }
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void GLScene::drawGameOver() {
+  // Display the game over text
+  glPushMatrix();
+    gameOverText->draw();
+  glPopMatrix();
+
+  // Play the game over sound
+  if (!sound->getPlayedGameOver()) {
+    sound->playGameOver();
+    sound->setPlayedGameOver(true);
   }
 }
 
@@ -368,6 +391,12 @@ GLint GLScene::init() {
   dot = new Model();
   dot->init("images/menu/dot.png");
 
+  // Setup the game over text
+  gameOverText = new Model();
+  gameOverText->init("images/menu/game_over.png");
+  gameOverText->setModelSize(5.f, 0.8209f, 1.f);
+  gameOverText->setTranslateX(-0.5);
+
   // Set the other variables
   pauseFlag = false;
   state     = 0;
@@ -375,24 +404,6 @@ GLint GLScene::init() {
 
   // Success
   return 1;
-}
-
-/*******************************************************************************
-*
-*******************************************************************************/
-void GLScene::printText(float x, float y, float z, string s) {
-  glPushMatrix();
-    glDisable(GL_TEXTURE);
-
-    glColor3f(1.f, 1.f, 1.f);
-    glRasterPos3f(x, y, z);
-
-    for (unsigned int i =0 ; i < s.size(); i++) {
-      glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s[i]);
-    }
-
-    glEnable(GL_TEXTURE);
-  glPopMatrix();
 }
 
 /*******************************************************************************
@@ -435,7 +446,7 @@ int GLScene::windowMsg(HWND h, UINT msg, WPARAM wp, LPARAM lp) {
     // Key is being held
     case WM_KEYDOWN:
       if (state == 1) {
-        inputs->keyDown(player, state);
+        inputs->keyDown(player, state, sound);
       }
       else {
         inputs->keyDown(menuState, state, sound);

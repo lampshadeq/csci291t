@@ -7,7 +7,7 @@
 - add additional levels (5 total)
 - add transition from level to level
 - fix projectile out-of-bounds bug (projectiles that never collide)
-- add sound FX (throwing projectiles, dying, winning)
+- add sound FX (winning)
 - fix game-menu-game bug
 
 ***

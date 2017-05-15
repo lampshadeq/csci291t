@@ -33,10 +33,10 @@ class GLScene {
     bool collision(float, float, float, float, float, float, float, float);
     void drawCreditsMenu();
     void drawGame();
+    void drawGameOver();
     void drawHelpMenu();
     void drawPauseMenu();
     void drawStartMenu();
-    void printText(float, float, float, string);
 
     bool         pauseFlag;
     double       rotateX, rotateY, rotateZ;
@@ -46,7 +46,8 @@ class GLScene {
     Inputs*      inputs;
     int          state, menuState;
     LevelLoader* levelLoader;
-    Model        *startMenu, *dot, *helpMenu, *creditsMenu, *pauseMenu;
+    Model        *startMenu, *dot, *helpMenu, *creditsMenu, *pauseMenu,
+                 *gameOverText;
     Player*      player;
     Sound*       sound;
 };
