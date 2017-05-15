@@ -196,11 +196,12 @@ void GLScene::drawGame() {
 
     // Check if the player reached the end of the level
     if (checkCollision(player, levelLoader)) {
-      //pauseFlag = true;
+      pauseFlag = true;
       player->setActionTrigger(0);
       state = 6;
       completeTimer->start();
       sound->playVictory();
+      w->clear();
     }
   }
 
@@ -284,6 +285,9 @@ void GLScene::drawLevelComplete() {
 
     // Stop the timer
     completeTimer->stop();
+
+    // Update the pause flag
+    pauseFlag = false;
 
     // Update the level loader
     switch (levelLoader->getLevelNumber()) {
@@ -422,7 +426,8 @@ void GLScene::drawStartMenu() {
 void GLScene::drawYouWon() {
   // Check the timer to transition back to the start menu
   if (completeTimer->getTicks() > 4000) {
-    state = 0;
+    state     = 0;
+    pauseFlag = false;
     sound->stopBackground();
     sound->playMenu();
   }

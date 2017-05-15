@@ -3,14 +3,8 @@ size 14 8
 start 1 12
 end 5 1
 
-cheese 1 5
-cheese 2 12
-cheese 4 11
 endcheese
 
-bag 5 5
-bag 4 8
-bag 0 12
 endbag
 
 IIIIIIIIIIIIII

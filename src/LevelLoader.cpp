@@ -186,6 +186,7 @@ void LevelLoader::load(char* filename) {
   ss  >> endCoord[1];
 
   // Parse the cheese coordinates
+  cheeses.clear();
   while (true) {
     ifs >> str;
 
@@ -210,6 +211,7 @@ void LevelLoader::load(char* filename) {
   }
 
   // Parse the bag coordinates
+  bags.clear();
   while (true) {
     ifs >> str;
 
