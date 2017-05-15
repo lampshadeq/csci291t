@@ -85,7 +85,7 @@ void Inputs::mouseWheel(Player* p, double z) {
 /*******************************************************************************
 *
 *******************************************************************************/
-void Inputs::keyDown(int& menuState, int& gameState) {
+void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
   switch (wp) {
     // Left arrow
     case VK_LEFT:
@@ -108,6 +108,7 @@ void Inputs::keyDown(int& menuState, int& gameState) {
     case VK_SPACE:
       if (menuState == 0) {
         gameState = 1;
+        sound->stopMenu();
       }
       else if (menuState == 1) {
         gameState = 2;

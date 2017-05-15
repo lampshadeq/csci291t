@@ -11,9 +11,15 @@ class Sound {
     ~Sound();
 
     void init();
+    bool isPlaying();
     void playBackground();
+    void playMenu();
+    void stopBackground();
+    void stopMenu();
 
   private:
+    bool          playing;
+    ISound        *menu, *background;
     ISoundEngine* engine;
 };
 

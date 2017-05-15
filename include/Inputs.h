@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <Player.h>
+#include <Sound.h>
 
 class Inputs {
   public:
@@ -13,7 +14,7 @@ class Inputs {
     void mouseMove(Player*, double, double);
     void mouseUp();
     void mouseWheel(Player*, double);
-    void keyDown(int&, int&);
+    void keyDown(int&, int&, Sound*);
     void keyDown(Player*);
     void keyUp(Player*);
     void setWP(WPARAM);

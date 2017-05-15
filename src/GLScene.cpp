@@ -9,7 +9,6 @@ GLScene::GLScene() {
   // Setup the sound
   sound = new Sound();
   sound->init();
-  sound->playBackground();
 }
 
 /*******************************************************************************
@@ -74,11 +73,17 @@ GLint GLScene::draw() {
     // Menu
     case 0:
       drawStartMenu();
+      if (!sound->isPlaying()) {
+        sound->playMenu();
+      }
       break;
 
     // Game
     case 1:
       drawGame();
+      if (!sound->isPlaying()) {
+        sound->playBackground();
+      }
       break;
 
     // Help
@@ -391,7 +396,7 @@ int GLScene::windowMsg(HWND h, UINT msg, WPARAM wp, LPARAM lp) {
     // Key is being held
     case WM_KEYDOWN:
       if (state != 1) {
-        inputs->keyDown(menuState, state);
+        inputs->keyDown(menuState, state, sound);
       }
       else {
         inputs->keyDown(player);
