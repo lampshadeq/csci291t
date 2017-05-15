@@ -89,21 +89,23 @@ void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
   switch (wp) {
     // Left arrow
     case VK_LEFT:
-      if (gameState != 4) {
+      if (gameState == 0) {
         menuState -= 1;
         if (menuState < 0) {
           menuState = 0;
         }
+        sound->playMenuMove();
       }
       break;
 
     // Right arrow
     case VK_RIGHT:
-      if (gameState != 4) {
+      if (gameState == 0) {
         menuState += 1;
         if (menuState > 3) {
           menuState = 3;
         }
+        sound->playMenuMove();
       }
       break;
 
@@ -114,6 +116,7 @@ void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
         if (menuState < 0) {
           menuState = 0;
         }
+        sound->playMenuMove();
       }
       break;
 
@@ -124,13 +127,14 @@ void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
         if (menuState > 2) {
           menuState = 2;
         }
+        sound->playMenuMove();
       }
       break;
 
     // Return key or space key
     case VK_RETURN:
     case VK_SPACE:
-      if (gameState != 4) {         // Main menu
+      if (gameState == 0) {         // Main menu
         if (menuState == 0) {
           gameState = 1;
           sound->stopMenu();
@@ -145,7 +149,7 @@ void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
           gameState = -1;
         }
       }
-      else {                        // Game paused
+      else if (gameState == 4) {    // Game paused
         if (menuState == 0) {
           gameState = 1;
         }

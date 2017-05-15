@@ -19,7 +19,10 @@ Sound::~Sound() {
 *
 *******************************************************************************/
 void Sound::init() {
-  engine = createIrrKlangDevice();
+  engine   = createIrrKlangDevice();
+  menuMove = engine->addSoundSourceFromFile("sounds/menu_move.wav");
+
+  menuMove->setDefaultVolume(0.25f);
 }
 
 /*******************************************************************************
@@ -45,6 +48,13 @@ void Sound::playBackground() {
 void Sound::playMenu() {
   menu    = engine->play2D("sounds/menu.wav", true, false, true);
   playing = true;
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void Sound::playMenuMove() {
+  engine->play2D(menuMove);
 }
 
 /*******************************************************************************

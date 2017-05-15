@@ -14,6 +14,7 @@ class Sound {
     bool isPlaying();
     void playBackground();
     void playMenu();
+    void playMenuMove();
     void stopBackground();
     void stopMenu();
 
@@ -21,6 +22,7 @@ class Sound {
     bool          playing;
     ISound        *menu, *background;
     ISoundEngine* engine;
+    ISoundSource* menuMove;
 };
 
 #endif
