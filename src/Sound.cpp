@@ -4,7 +4,7 @@
 *
 *******************************************************************************/
 Sound::Sound()
-: playing(false), playedGameOver(false) {
+: playing(false), playedGameOver(false), background(NULL), menu(NULL) {
 
 }
 
@@ -19,7 +19,7 @@ Sound::~Sound() {
 *
 *******************************************************************************/
 bool Sound::backgroundOn() {
-  return background != 0;
+  return background != NULL;
 }
 
 /*******************************************************************************
@@ -121,7 +121,7 @@ void Sound::stopBackground() {
   background->stop();
   background->drop();
 
-  background = 0;
+  background = NULL;
   playing    = false;
 }
 
@@ -132,7 +132,7 @@ void Sound::stopMenu() {
   menu->stop();
   menu->drop();
 
-  menu    = 0;
+  menu    = NULL;
   playing = false;
 }
 

@@ -2,7 +2,6 @@
 ## CSCI 291T - Spring 2017
 
 ### Things to do:
-- add particles
 - add parallax
 - add additional levels (5 total)
 - add transition from level to level
@@ -18,6 +17,7 @@
 - level loader
 - projectiles
 - menu implementation
+- particles
 #### Stanis
 - sounds
 - graphics

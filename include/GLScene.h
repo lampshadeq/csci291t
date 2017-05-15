@@ -13,6 +13,7 @@
 #include <Player.h>
 #include <Sound.h>
 #include <string>
+#include <Particles.h>
 
 using namespace std;
 
@@ -48,6 +49,7 @@ class GLScene {
     LevelLoader* levelLoader;
     Model        *startMenu, *dot, *helpMenu, *creditsMenu, *pauseMenu,
                  *gameOverText;
+    Particles*   particles;
     Player*      player;
     Sound*       sound;
 };

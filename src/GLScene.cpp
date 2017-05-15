@@ -26,6 +26,7 @@ GLScene::~GLScene() {
   delete creditsMenu;
   delete pauseMenu;
   delete gameOverText;
+  delete particles;
 }
 
 /*******************************************************************************
@@ -108,7 +109,7 @@ GLint GLScene::draw() {
       drawPauseMenu();
       break;
 
-    // Game over
+    // Game Over
     case 5:
       drawGame();
       drawGameOver();
@@ -287,41 +288,51 @@ void GLScene::drawPauseMenu() {
 *
 *******************************************************************************/
 void GLScene::drawStartMenu() {
+  double x, y;
+
+  // Calculate the dot's translation
+  y = 12.4;
+  switch (menuState) {
+    // New game
+    case 0:
+      x = -25.0;
+      break;
+
+    // Help
+    case 1:
+      x = -8.5;
+      break;
+
+    // Credits
+    case 2:
+      x = 2.0;
+      break;
+
+    // Quit
+    case 3:
+      x = 16.0;
+      break;
+  }
+
   // Display the start menu
   glPushMatrix();
     startMenu->draw();
   glPopMatrix();
 
+  // Display the particles
+  glPushMatrix();
+    glDisable(GL_TEXTURE_2D);
+    particles->generate(x, y);
+    particles->draw();
+    particles->lifetime();
+    glEnable(GL_TEXTURE_2D);
+  glPopMatrix();
+
   // Display the dot
   glPushMatrix();
-    // Set the correct translations
     dot->setModelSize(0.25f, 0.25f, 1.f);
-    switch (menuState) {
-      // New game
-      case 0:
-        dot->setTranslateX(-25.0);
-        dot->setTranslateY(12.4);
-        break;
-
-      // Help
-      case 1:
-        dot->setTranslateX(-8.5);
-        dot->setTranslateY(12.4);
-        break;
-
-      // Credits
-      case 2:
-        dot->setTranslateX(2.0);
-        dot->setTranslateY(12.4);
-        break;
-
-      // Quit
-      case 3:
-        dot->setTranslateX(16.0);
-        dot->setTranslateY(12.4);
-        break;
-    }
-
+    dot->setTranslateX(x);
+    dot->setTranslateY(y);
     dot->draw();
   glPopMatrix();
 }
@@ -396,6 +407,9 @@ GLint GLScene::init() {
   gameOverText->init("images/menu/game_over.png");
   gameOverText->setModelSize(5.f, 0.8209f, 1.f);
   gameOverText->setTranslateX(-0.5);
+
+  // Setup the particles
+  particles = new Particles();
 
   // Set the other variables
   pauseFlag = false;
