@@ -1,7 +1,7 @@
 # Chicken Cheese Crusaders
-# CSCI 291T - Spring 2017
+## CSCI 291T - Spring 2017
 
-Things to do:
+### Things to do:
 - add pause menu
 - add particles
 - add parallax
@@ -10,13 +10,13 @@ Things to do:
 - fix projectile out-of-bounds bug (projectiles that never collide)
 - add sound FX (player steps, throwing projectiles, dying, winning)
 
-Contributions List
-Carlos
+### Contributions List
+#### Carlos
 - game engine (cleaned Dhanyu's code)
 - level loader
 - projectiles
 - menu implementation
-Stanis
+#### Stanis
 - sounds
 - graphics
 - collision detection
