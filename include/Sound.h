@@ -21,6 +21,7 @@ class Sound {
     void playMenu();
     void playMenuMove();
     void playThrowCheese();
+    void playVictory();
     void setPlayedGameOver(bool);
     void stopBackground();
     void stopMenu();
@@ -30,7 +31,7 @@ class Sound {
     ISound        *menu, *background;
     ISoundEngine* engine;
     ISoundSource  *menuMove, *collectCheese, *throwCheese, *cheeseCollision,
-                  *gameOver;
+                  *gameOver, *victory;
 };
 
 #endif

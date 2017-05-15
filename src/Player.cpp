@@ -45,7 +45,8 @@ void Player::action(int a, LevelLoader* levelLoader) {
     case 1:
       tileType = getTileForCoordinate(levelLoader, x, y - movement - 0.6f);
 
-      if (tileType == 'G' || tileType == 'D') {
+      if (tileType == 'G' || tileType == 'D' || tileType == 'I' ||
+          tileType == 'L' || tileType == 'S' || tileType == 'W') {
         movement = 0.f;
       }
 
@@ -65,7 +66,8 @@ void Player::action(int a, LevelLoader* levelLoader) {
     case 2:
       tileType = getTileForCoordinate(levelLoader, x, y + movement);
 
-      if (tileType == 'G' || tileType == 'D') {
+      if (tileType == 'G' || tileType == 'D' || tileType == 'I' ||
+          tileType == 'L' || tileType == 'S' || tileType == 'W') {
         movement = 0.f;
       }
 
@@ -85,7 +87,8 @@ void Player::action(int a, LevelLoader* levelLoader) {
     case 3:
       tileType = getTileForCoordinate(levelLoader, x + movement + 0.6f, y);
 
-      if (tileType == 'G' || tileType == 'D') {
+      if (tileType == 'G' || tileType == 'D' || tileType == 'I' ||
+          tileType == 'L' || tileType == 'S' || tileType == 'W') {
         movement = 0.f;
       }
 
@@ -105,7 +108,8 @@ void Player::action(int a, LevelLoader* levelLoader) {
     case 4:
       tileType = getTileForCoordinate(levelLoader, x - movement, y);
 
-      if (tileType == 'G' || tileType == 'D') {
+      if (tileType == 'G' || tileType == 'D' || tileType == 'I' ||
+          tileType == 'L' || tileType == 'S' || tileType == 'W') {
         movement = 0.f;
       }
 

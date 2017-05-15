@@ -4,10 +4,11 @@
 ### Things to do:
 - add parallax
 - fix projectile out-of-bounds bug (projectiles that never collide)
-- add sound FX (winning)
 - fix game-menu-game bug
 - add particle for level complete/you won
 - add on-screen text for number of available projectiles
+- fix cheese roll-over bug
+- fix end tile bug
 
 ***
 

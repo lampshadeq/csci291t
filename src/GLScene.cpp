@@ -200,6 +200,7 @@ void GLScene::drawGame() {
       player->setActionTrigger(0);
       state = 6;
       completeTimer->start();
+      sound->playVictory();
     }
   }
 
@@ -271,13 +272,13 @@ void GLScene::drawHelpMenu() {
 *******************************************************************************/
 void GLScene::drawLevelComplete() {
   // Move to winning state if the last level
-  if (levelLoader->getLevelNumber() == 4) {
+  if (levelLoader->getLevelNumber() == 5) {
     state = 7;
     return;
   }
 
   // Check the timer to transition to next level
-  if (completeTimer->getTicks() > 5000) {
+  if (completeTimer->getTicks() > 4000) {
     // Update the game state
     state = 1;
 
@@ -420,7 +421,7 @@ void GLScene::drawStartMenu() {
 *******************************************************************************/
 void GLScene::drawYouWon() {
   // Check the timer to transition back to the start menu
-  if (completeTimer->getTicks() > 5000) {
+  if (completeTimer->getTicks() > 4000) {
     state = 0;
     sound->stopBackground();
     sound->playMenu();

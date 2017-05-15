@@ -39,12 +39,14 @@ void Sound::init() {
   throwCheese     = engine->addSoundSourceFromFile("sounds/throw_cheese.wav");
   cheeseCollision = engine->addSoundSourceFromFile("sounds/co_collision.wav");
   gameOver        = engine->addSoundSourceFromFile("sounds/game_over.wav");
+  victory         = engine->addSoundSourceFromFile("sounds/victory.wav");
 
   menuMove->setDefaultVolume(0.25f);
   collectCheese->setDefaultVolume(0.5f);
   throwCheese->setDefaultVolume(0.5f);
   cheeseCollision->setDefaultVolume(0.5f);
   gameOver->setDefaultVolume(0.5f);
+  victory->setDefaultVolume(0.5f);
 }
 
 /*******************************************************************************
@@ -105,6 +107,13 @@ void Sound::playMenuMove() {
 *******************************************************************************/
 void Sound::playThrowCheese() {
   engine->play2D(throwCheese);
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void Sound::playVictory() {
+  engine->play2D(victory);
 }
 
 /*******************************************************************************
