@@ -18,6 +18,7 @@
 - projectiles
 - menu implementation
 - particles
+- shaders
 #### Stanis
 - sounds
 - graphics

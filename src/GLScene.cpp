@@ -4,8 +4,6 @@
 *
 *******************************************************************************/
 GLScene::GLScene() {
-  init();
-
   // Setup the sound
   sound = new Sound();
   sound->init();
@@ -27,6 +25,7 @@ GLScene::~GLScene() {
   delete pauseMenu;
   delete gameOverText;
   delete particles;
+  delete shaderLoader;
 }
 
 /*******************************************************************************
@@ -321,11 +320,22 @@ void GLScene::drawStartMenu() {
 
   // Display the particles
   glPushMatrix();
-    glDisable(GL_TEXTURE_2D);
+    glUseProgram(shaderLoader->getProgram());
+    GLint locationR = glGetUniformLocation(shaderLoader->getProgram(), "r");
+    GLint locationG = glGetUniformLocation(shaderLoader->getProgram(), "g");
+    GLint locationB = glGetUniformLocation(shaderLoader->getProgram(), "b");
+    if (locationR != -1 && locationG != -1 && locationB != -1) {
+      glUniform1f(locationR, shaderLoader->getR());
+      glUniform1f(locationG, shaderLoader->getG());
+      glUniform1f(locationB, shaderLoader->getB());
+      shaderLoader->updateColors();
+    }
+
     particles->generate(x, y);
     particles->draw();
     particles->lifetime();
-    glEnable(GL_TEXTURE_2D);
+
+    glUseProgram(0);
   glPopMatrix();
 
   // Display the dot
@@ -410,6 +420,11 @@ GLint GLScene::init() {
 
   // Setup the particles
   particles = new Particles();
+
+  // Setup the shader loader
+  glewInit();
+  shaderLoader = new ShaderLoader();
+  shaderLoader->init("shaders/v1.vs", "shaders/f1.fs");
 
   // Set the other variables
   pauseFlag = false;
