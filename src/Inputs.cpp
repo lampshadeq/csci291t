@@ -89,41 +89,82 @@ void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
   switch (wp) {
     // Left arrow
     case VK_LEFT:
-      menuState -= 1;
-      if (menuState < 0) {
-        menuState = 0;
+      if (gameState != 4) {
+        menuState -= 1;
+        if (menuState < 0) {
+          menuState = 0;
+        }
       }
       break;
 
     // Right arrow
     case VK_RIGHT:
-      menuState += 1;
-      if (menuState > 3) {
-        menuState = 3;
+      if (gameState != 4) {
+        menuState += 1;
+        if (menuState > 3) {
+          menuState = 3;
+        }
+      }
+      break;
+
+    // Up arrow
+    case VK_UP:
+      if (gameState == 4) {
+        menuState -= 1;
+        if (menuState < 0) {
+          menuState = 0;
+        }
+      }
+      break;
+
+    // Down arrow
+    case VK_DOWN:
+      if (gameState == 4) {
+        menuState += 1;
+        if (menuState > 2) {
+          menuState = 2;
+        }
       }
       break;
 
     // Return key or space key
     case VK_RETURN:
     case VK_SPACE:
-      if (menuState == 0) {
-        gameState = 1;
-        sound->stopMenu();
+      if (gameState != 4) {         // Main menu
+        if (menuState == 0) {
+          gameState = 1;
+          sound->stopMenu();
+        }
+        else if (menuState == 1) {
+          gameState = 2;
+        }
+        else if (menuState == 2) {
+          gameState = 3;
+        }
+        else if (menuState == 3) {
+          gameState = -1;
+        }
       }
-      else if (menuState == 1) {
-        gameState = 2;
-      }
-      else if (menuState == 2) {
-        gameState = 3;
-      }
-      else if (menuState == 3) {
-        gameState = -1;
+      else {                        // Game paused
+        if (menuState == 0) {
+          gameState = 1;
+        }
+        else if (menuState == 1) {
+          gameState = 0;
+          menuState = 0;
+          sound->stopBackground();
+        }
+        else if (menuState == 2) {
+          gameState = -1;
+        }
       }
       break;
 
     // Backspace key
     case VK_BACK:
-      gameState = 0;
+      if (gameState != 4) {
+        gameState = 0;
+      }
       break;
   }
 }
@@ -131,7 +172,7 @@ void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
 /*******************************************************************************
 *
 *******************************************************************************/
-void Inputs::keyDown(Player* p) {
+void Inputs::keyDown(Player* p, int& gameState) {
   switch (wp) {
     // Left arrow
     case VK_LEFT:
@@ -166,6 +207,11 @@ void Inputs::keyDown(Player* p) {
     // Space
     case VK_SPACE:
       p->launchProjectile();
+      break;
+
+    // Backspace
+    case VK_BACK:
+      gameState = 4;
       break;
   }
 }

@@ -24,6 +24,7 @@ GLScene::~GLScene() {
   delete dot;
   delete helpMenu;
   delete creditsMenu;
+  delete pauseMenu;
 }
 
 /*******************************************************************************
@@ -64,6 +65,10 @@ bool GLScene::collision(float x1, float y1, float w1, float h1, float x2,
 GLint GLScene::draw() {
   GLint status = 1;
 
+  // Clear the screen
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+
   switch (state) {
     // Quit
     case -1:
@@ -95,6 +100,12 @@ GLint GLScene::draw() {
     case 3:
       drawCreditsMenu();
       break;
+
+    // Game Paused
+    case 4:
+      drawGame();
+      drawPauseMenu();
+      break;
   }
 
   // Done
@@ -105,10 +116,6 @@ GLint GLScene::draw() {
 *
 *******************************************************************************/
 void GLScene::drawCreditsMenu() {
-  // Clear the screen
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
-
   // Display the credits menu
   glPushMatrix();
     creditsMenu->draw();
@@ -122,10 +129,6 @@ void GLScene::drawGame() {
   unsigned int    i, j;
   vector<int>     idxFlags;
   vector<Model*> *v, *w;
-
-  // Clear the screen
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
 
   // Check for collision between player and cheeses
   v = levelLoader->getCheeses();
@@ -214,10 +217,6 @@ void GLScene::drawGame() {
 *
 *******************************************************************************/
 void GLScene::drawHelpMenu() {
-  // Clear the screen
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
-
   // Display the help menu
   glPushMatrix();
     helpMenu->draw();
@@ -227,11 +226,44 @@ void GLScene::drawHelpMenu() {
 /*******************************************************************************
 *
 *******************************************************************************/
-void GLScene::drawStartMenu() {
-  // Clear the screen
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
+void GLScene::drawPauseMenu() {
+  // Display the pause menu
+  glPushMatrix();
+    pauseMenu->draw();
+  glPopMatrix();
 
+  // Display the dot
+  glPushMatrix();
+    // Set the correct translations
+    dot->setModelSize(0.15f, 0.15f, 1.f);
+    switch (menuState) {
+      // Resume
+      case 0:
+        dot->setTranslateX(-5.5);
+        dot->setTranslateY(2.5);
+        break;
+
+      // Menu
+      case 1:
+        dot->setTranslateX(-4.25);
+        dot->setTranslateY(6.8);
+        break;
+
+      // Quit
+      case 2:
+        dot->setTranslateX(-4.25);
+        dot->setTranslateY(11.0);
+        break;
+    }
+
+    dot->draw();
+  glPopMatrix();
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
+void GLScene::drawStartMenu() {
   // Display the start menu
   glPushMatrix();
     startMenu->draw();
@@ -240,6 +272,7 @@ void GLScene::drawStartMenu() {
   // Display the dot
   glPushMatrix();
     // Set the correct translations
+    dot->setModelSize(0.25f, 0.25f, 1.f);
     switch (menuState) {
       // New game
       case 0:
@@ -318,6 +351,13 @@ GLint GLScene::init() {
   creditsMenu->setTranslateX(-0.5);
   creditsMenu->setTranslateY(0.57);
 
+  // Setup the pause menu
+  pauseMenu = new Model();
+  pauseMenu->init("images/menu/pause_menu.png");
+  pauseMenu->setModelSize(4.f, 4.2065f, 1.f);
+  pauseMenu->setTranslateX(-0.5);
+  pauseMenu->setTranslateY(0.5);
+
   // Setup the player
   player = new Player();
   player->init();
@@ -327,7 +367,6 @@ GLint GLScene::init() {
   // Setup the dot
   dot = new Model();
   dot->init("images/menu/dot.png");
-  dot->setModelSize(0.25f, 0.25f, 1.f);
 
   // Set the other variables
   pauseFlag = false;
@@ -395,11 +434,11 @@ int GLScene::windowMsg(HWND h, UINT msg, WPARAM wp, LPARAM lp) {
   switch (msg) {
     // Key is being held
     case WM_KEYDOWN:
-      if (state != 1) {
-        inputs->keyDown(menuState, state, sound);
+      if (state == 1) {
+        inputs->keyDown(player, state);
       }
       else {
-        inputs->keyDown(player);
+        inputs->keyDown(menuState, state, sound);
       }
       break;
 
