@@ -165,6 +165,7 @@ void Inputs::keyDown(int& menuState, int& gameState, Sound* sound) {
       break;
 
     // Backspace key
+    case VK_ESCAPE:
     case VK_BACK:
       if (gameState != 4) {
         gameState = 0;
@@ -209,6 +210,7 @@ void Inputs::keyDown(Player* p, int& gameState, Sound* sound) {
       break;
 
     // Backspace
+    case VK_ESCAPE:
     case VK_BACK:
       gameState = 4;
       break;

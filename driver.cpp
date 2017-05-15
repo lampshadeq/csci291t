@@ -85,7 +85,7 @@ int WINAPI WinMain(HINSTANCE currInst, HINSTANCE prevInst, LPSTR cmdParams,
     // No message
     else {
       // Draw the scene, watching for ESC key or a quit signal
-      if ((active && !scene->draw()) || (keys[VK_ESCAPE])) {
+      if ((active && !scene->draw())) {
         done = true;
       }
 
@@ -132,7 +132,7 @@ int WINAPI WinMain(HINSTANCE currInst, HINSTANCE prevInst, LPSTR cmdParams,
 *   true if successfully created the window, false otherwise
 *******************************************************************************/
 bool createGLWindow(char* title, int width, int height, int bits,
-                    bool fullscreen) { 
+                    bool fullscreen) {
   GLuint    pixelFormat;
   DEVMODE   dmScreenSettings;
   DWORD     style, extStyle;
