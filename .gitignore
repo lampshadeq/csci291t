@@ -9,3 +9,6 @@ bin/
 
 # ignore obj folder
 obj/
+
+#ignore layout
+*.layout
