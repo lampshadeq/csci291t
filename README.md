@@ -10,6 +10,8 @@
 - fix projectile out-of-bounds bug (projectiles that never collide)
 - add sound FX (player steps, throwing projectiles, dying, winning)
 
+***
+
 ### Contributions List
 #### Carlos
 - game engine (cleaned Dhanyu's code)
