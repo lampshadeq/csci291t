@@ -19,6 +19,21 @@ Controls:
   - use the space bar to launch your cheese projectiles
   - use the backspace key or escape key to go back to the main menu
   
+Contributions:
+  Carlos
+    - optimized game engine
+	- developed level loader
+	- implemented particles
+	- shading programming
+	
+  Akhil
+    - utilized sound engine
+	- level designer
+	- menu designer
+	- designed the other graphics
+	- collision detection
+	- bug hunter (fixed bugs left by Carlos)
+  
 Implementation:
   We utilized the C++ programming language in combination with
   OpenGL. In addition, many libraries were used such as irrKlang for
