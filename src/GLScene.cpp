@@ -452,6 +452,26 @@ void GLScene::drawYouWon() {
     sound->playMenu();
   }
 
+  // Display the particles
+  glPushMatrix();
+    glUseProgram(shaderLoader->getProgram());
+    GLint locationR = glGetUniformLocation(shaderLoader->getProgram(), "r");
+    GLint locationG = glGetUniformLocation(shaderLoader->getProgram(), "g");
+    GLint locationB = glGetUniformLocation(shaderLoader->getProgram(), "b");
+    if (locationR != -1 && locationG != -1 && locationB != -1) {
+      glUniform1f(locationR, shaderLoader->getR());
+      glUniform1f(locationG, shaderLoader->getG());
+      glUniform1f(locationB, shaderLoader->getB());
+      shaderLoader->updateColors();
+    }
+
+    particles->generate();
+    particles->draw();
+    particles->lifetime();
+
+    glUseProgram(0);
+  glPopMatrix();
+
   // Display the you won text
   glPushMatrix();
     youWonText->draw();
