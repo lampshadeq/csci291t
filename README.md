@@ -4,9 +4,9 @@
 ### Things to do:
 - add parallax
 - fix projectile out-of-bounds bug (projectiles that never collide)
-- fix game-menu-game bug
 - add on-screen text for number of available projectiles
 - fix end tile bug
+- fix particle rollover bug
 
 ***
 
@@ -23,3 +23,4 @@
 - graphics
 - collision detection
 - menu design
+- level design

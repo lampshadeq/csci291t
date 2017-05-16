@@ -564,6 +564,24 @@ GLint GLScene::init() {
 /*******************************************************************************
 *
 *******************************************************************************/
+void GLScene::resetGame() {
+  delete player;
+  delete levelLoader;
+
+  // Setup the level loader
+  levelLoader = new LevelLoader();
+  levelLoader->load("levels/level1");
+
+  // Setup the player
+  player = new Player();
+  player->init();
+  player->setX(levelLoader->getStartX() + 0.2f);
+  player->setY(levelLoader->getStartY());
+}
+
+/*******************************************************************************
+*
+*******************************************************************************/
 GLvoid GLScene::resizeScene(GLsizei w, GLsizei h) {
   GLdouble aspectRatio;
 
@@ -589,6 +607,8 @@ GLvoid GLScene::resizeScene(GLsizei w, GLsizei h) {
 *
 *******************************************************************************/
 int GLScene::windowMsg(HWND h, UINT msg, WPARAM wp, LPARAM lp) {
+  int prevState = state;
+
   // No inputs should be processed if the game is in a paused state
   if (pauseFlag) {
     return 0;
@@ -605,6 +625,11 @@ int GLScene::windowMsg(HWND h, UINT msg, WPARAM wp, LPARAM lp) {
       }
       else {
         inputs->keyDown(menuState, state, sound);
+
+        // Check for a reset
+        if (state == 1 && prevState != 4) {
+          resetGame();
+        }
       }
       break;
 

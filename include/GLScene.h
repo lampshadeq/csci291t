@@ -43,6 +43,7 @@ class GLScene {
     void drawPauseMenu();
     void drawStartMenu();
     void drawYouWon();
+    void resetGame();
 
     bool          pauseFlag;
     double        rotateX, rotateY, rotateZ;
