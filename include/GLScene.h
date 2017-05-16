@@ -60,6 +60,7 @@ class GLScene {
     ShaderLoader* shaderLoader;
     Sound*        sound;
     Timer*        completeTimer;
+    vector<Model> smallCheese;
 };
 
 #endif

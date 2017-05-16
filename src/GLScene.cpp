@@ -240,6 +240,11 @@ void GLScene::drawGame() {
       glPopMatrix();
     }
   }
+
+  // Draw the number of projectiles
+  glPushMatrix();
+    smallCheese[v->size()].draw();
+  glPopMatrix();
 }
 
 /*******************************************************************************
@@ -571,6 +576,18 @@ GLint GLScene::init() {
 
   // Setup the complete timer
   completeTimer = new Timer();
+
+  // Setup the small cheese
+  smallCheese.resize(4);
+  smallCheese[0].init("images/cheese-counts/0.png");
+  smallCheese[1].init("images/cheese-counts/1.png");
+  smallCheese[2].init("images/cheese-counts/2.png");
+  smallCheese[3].init("images/cheese-counts/3.png");
+  for (int i = 0; i < smallCheese.size(); i++) {
+    smallCheese[i].setModelSize(2.f, 0.8142f, 1.f);
+    smallCheese[i].setTranslateX(-3.5);
+    smallCheese[i].setTranslateY(-3.7);
+  }
 
   // Set the other variables
   pauseFlag = false;

@@ -27,7 +27,8 @@ void Model::draw() {
   glScalef(modelSize[0], modelSize[1], modelSize[2]);
 
   // Update the translations
-  double delta = 0.05;
+  //double delta = 0.05;
+  double delta = 0.005;
   if (active) {
     // Vertical
     if (!direction) {
