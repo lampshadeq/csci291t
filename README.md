@@ -4,7 +4,6 @@
 ### Things to do:
 - add parallax
 - fix projectile out-of-bounds bug (projectiles that never collide)
-- add on-screen text for number of available projectiles
 - fix end tile bug
 - fix particle rollover bug
 
