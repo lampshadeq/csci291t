@@ -45,7 +45,7 @@ void Particles::generate() {
   int newParticles;
 
   // Generate a random number of new particles to create
-  newParticles = drand() * 3;
+  newParticles = drand() * 8;
 
   // Ensure the total number is not more than the maximum
   if (numParticles + newParticles > maxParticles) {
@@ -79,16 +79,7 @@ void Particles::generate(float dx, float dy) {
   dy /= -4.6f;
 
   // Generate a random number of new particles to create
-  // FIXME MADE CHANGE BECAUSE DUMB LAPTOP, ORIGINAL IS JUST:
-  // newParticles = drand() * 3;
-  int r = rand() % 8;
-  if (r == 0) {
-    newParticles = drand() * 2;
-  }
-  else {
-    newParticles = 0;
-  }
-
+  newParticles = drand() * 3;
 
   // Ensure the total number is not more than the maximum
   if (numParticles + newParticles > maxParticles) {
