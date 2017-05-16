@@ -5,7 +5,6 @@
 - add parallax
 - fix projectile out-of-bounds bug (projectiles that never collide)
 - fix game-menu-game bug
-- add particle for level complete/you won
 - add on-screen text for number of available projectiles
 - fix end tile bug
 

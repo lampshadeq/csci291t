@@ -14,18 +14,20 @@ class Particles {
     ~Particles();
 
     void draw();
+    void generate();
     void generate(float, float);
     void lifetime();
 
   private:
-    double drand();
-
     struct Particle {
-      bool  alive;
+      bool  alive, text;
       float xpos, ypos, zpos;
       float xdir, ydir;
       float mass;
     };
+
+    double drand();
+    void   randomize(Particle&);
 
     float            gravity;
     int              maxParticles, numParticles;
